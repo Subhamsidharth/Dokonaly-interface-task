@@ -3,6 +3,8 @@ import './App.css';
 import {Route, Routes} from 'react-router';
 import { Suspense } from 'react';
 import { Header } from './components/Header/Header';
+import { Users } from './components/Users/Users';
+import { ChangePassword } from './components/ChangePassword/ChangePassword';
 
 
 const Home = React.lazy(() => import('./Views/Home/Home'));
@@ -20,6 +22,8 @@ function App() {
       <Route path='/' element={<Home />} />
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/changepassword" element={<ChangePassword />} />
      </Routes>
      </Suspense>
     </div>

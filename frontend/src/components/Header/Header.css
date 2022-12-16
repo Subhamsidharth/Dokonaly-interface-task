@@ -1,10 +1,9 @@
 .header-section{
-    position: fixed;
+    /* position: fixed; */
     background-color: red;
     color: #fff;
     display: flex;
     justify-content: space-between;
-    width: 100vw;
     padding: 20px;
 }
 

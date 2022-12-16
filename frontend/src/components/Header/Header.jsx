@@ -1,18 +1,16 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {NavLink} from 'react-router-dom';
 import './Header.css';
 
 export const Header = () => {
   return (
     <section className='header-section'>
-        
             <div>Profile</div>
             <ul>
-                <li>users</li>
-                <li>change password</li>
-                <li>logout</li>
+                <li><NavLink to="/users">Users</NavLink></li>
+                <li><NavLink to="/changepassword">Change Password</NavLink></li>
+                <li><NavLink to="/signup">Logout</NavLink></li>
             </ul>
-    
     </section>
   )
 }
