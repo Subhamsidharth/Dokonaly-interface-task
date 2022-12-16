@@ -98,7 +98,7 @@ const getUserDetail = async function (req, res) {
         if (!userIdParams || !userIdParams.trim()) return res.status(400).send({ status: false, message: "enter userId in url path" });
         if (!mongoose.isValidObjectId(userIdParams))
             return res.status(400).send({ status: false, message: "User Id is Not Valid" })
-        const findUserDetail = await userModel.findOne({ _id: userIdParams })
+        const findUserDetail = await userModel.findOne({ _id: userIdParams }).select({ firstName:1,lastName:1,email:1,profileImage:1,_id:0 })
         if (!findUserDetail) return res.status(404).send({ status: false, message: "No User Exist" })
 
         // if (userIdParams !== req.userId)
