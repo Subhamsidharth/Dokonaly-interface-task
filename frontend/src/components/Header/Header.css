@@ -1,0 +1,15 @@
+.header-section{
+    position: fixed;
+    background-color: red;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 20px;
+}
+
+ul li{
+    list-style: none;
+    display: inline;
+    margin: 0 20px;
+}
