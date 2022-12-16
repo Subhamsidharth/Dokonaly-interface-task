@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     profileImage: {
         type: String,
-        required: true
+        default:"https://img.freepik.com/free-icon/user_318-804790.jpg?w=2000"     // required: true
     },
     password: {
         type: String,
