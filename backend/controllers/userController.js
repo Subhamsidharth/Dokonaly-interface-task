@@ -2,7 +2,7 @@ const userModel = require("../models/UserModel");
 const jwt = require('jsonwebtoken');
 const { uploadFile } = require("../aws/aws");
 const bcrypt = require('bcrypt');
-const mongoose=require("mongoose")
+const mongoose = require("mongoose")
 
 
 const isValid = function (value) {
@@ -19,8 +19,10 @@ const signup = async (req, res) => {
             return res.status(400).send("please give the all data")
 
         let { firstName, lastName, email, password } = data
-        if (!isValid(files))
-        return res.status(400).send({ status: false, message: "firstname is mandatory." })
+        if (files && files.length !== 0) {
+            if (!isValid(files[0].originalname)) return res.status(400).send({ status: false, message: "invalid format of the profile image" });
+            var profileImage = await uploadFile(files[0]);
+        }
         if (!isValid(firstName))
             return res.status(400).send({ status: false, message: "firstname is mandatory." })
         if (!isValid(lastName))
@@ -29,15 +31,16 @@ const signup = async (req, res) => {
             return res.status(400).send({ status: false, message: "email is a mandatory." })
         if (!isValid(password))
             return res.status(400).send({ status: false, message: "password is a mandatory." })
-
-            let profileImage = await uploadFile(files[0])
-            const hash = bcrypt.hashSync(password, 10); // para1:password, para2:saltRound
+        // if (files.length !== 0) {
+        //     var profileImage = await uploadFile(files[0])
+        // }
+        const hash = bcrypt.hashSync(password, 10); // para1:password, para2:saltRound
 
 
         const mail = await userModel.findOne({ email: email })
         if (mail) return res.status(400).send({ status: false, message: "EmailId Already Registered " })
 
-        let userregister = {firstName, lastName, email, password:hash,profileImage}
+        let userregister = { firstName, lastName, email, password: hash, profileImage }
         const create = await userModel.create(userregister)
         return res.status(201).send({ status: true, message: "User Created Successfully", data: create })
 
@@ -47,7 +50,7 @@ const signup = async (req, res) => {
 }
 
 const userLogin = async (req, res) => {
-    try {                                                                   
+    try {
         const body = req.body
         const { email, password } = body
 
@@ -68,7 +71,7 @@ const userLogin = async (req, res) => {
                 const generatedToken = jwt.sign({
                     userId: user._id,
                     iat: Math.floor(Date.now() / 1000),
-                    exp: Math.floor(Date.now() / 1000) + 3600 * 24 
+                    exp: Math.floor(Date.now() / 1000) + 3600 * 24
                 }, 'Dokonaly')
                 res.setHeader('Authorization', 'Bearer ' + generatedToken)
                 return res.status(200).send({
@@ -91,14 +94,14 @@ const userLogin = async (req, res) => {
     }
 };
 
-const getUserDetail = async function (req, res) {                            
+const getUserDetail = async function (req, res) {
     try {
         let userIdParams = req.params.userId
 
         if (!userIdParams || !userIdParams.trim()) return res.status(400).send({ status: false, message: "enter userId in url path" });
         if (!mongoose.isValidObjectId(userIdParams))
             return res.status(400).send({ status: false, message: "User Id is Not Valid" })
-        const findUserDetail = await userModel.findOne({ _id: userIdParams }).select({ firstName:1,lastName:1,email:1,profileImage:1,_id:0 })
+        const findUserDetail = await userModel.findOne({ _id: userIdParams }).select({ firstName: 1, lastName: 1, email: 1, profileImage: 1, _id: 0 })
         if (!findUserDetail) return res.status(404).send({ status: false, message: "No User Exist" })
 
         // if (userIdParams !== req.userId)
@@ -112,4 +115,6 @@ const getUserDetail = async function (req, res) {
         return res.status(500).send({ status: false, message: error.message })
     }
 }
-module.exports={signup, userLogin,getUserDetail}
+
+
+module.exports = { signup, userLogin, getUserDetail }
