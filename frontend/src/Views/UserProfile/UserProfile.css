@@ -1,0 +1,101 @@
+.userprofile-section{
+  /* width: 500px; */
+  margin: 70px auto 0 ;
+  color: #000;
+  /* width: 100%; */
+  width: fit-content;
+}
+
+.flex-container{
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 30px;
+  margin: 5px 0;
+}
+
+label{
+  min-width: 130px
+}
+
+
+#exTab1 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+#exTab2 h3 {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+/* remove border radius for the tab */
+
+#exTab1 .nav-pills > li > a {
+  border-radius: 0;
+}
+
+/* change border radius for the tab , apply corners on top*/
+
+#exTab3 .nav-pills > li > a {
+  border-radius: 4px 4px 0 0 ;
+}
+
+#exTab3 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+.card-header{
+  border-bottom: none;
+}
+.tab-header-button{
+  border: none !important;
+  padding: 5px 10px;
+  background-color: gray;
+  border-radius: 5px  5px 0 0;
+  margin: 0 5px;
+} 
+button{
+  background: transparent;
+  border: none;
+}
+.active.tab-header-button {
+  background-color:rgb(90, 90, 167) !important ;
+  color: #fff !important;
+}
+
+ul li{
+  padding: 0 5px;
+  margin: 0;
+}
+.card-body{
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+.tab-button{
+  margin: 10px 0;
+  font-size: 16px;
+  padding: 5px 15px;
+  border: none;
+  background-color: rgb(90, 90, 167);
+  color: #fff;
+  border-radius: 5px;
+}
+
+.error{
+  color: red;
+  display: block;
+}
+
+@media screen and (max-width:426px){
+  .card-body{
+    padding: 0;
+  }
+}
+
+
+
+

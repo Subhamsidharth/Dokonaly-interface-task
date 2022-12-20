@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink , useNavigate} from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { useHttpClient } from "../../hook/http-hook";
+import {  toast } from 'react-toastify';
 import "./Signup.css";
 
 const Signup = () => {
@@ -11,29 +12,41 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { isLoading, apiCall, errorMessage } = useHttpClient();
+  const { isLoading, apiCall } = useHttpClient();
   const [profileImg, setProfileImg] = useState(null);
   const [profileImgUrl, setProfileImgUrl] = useState(null);
   const fileRef = useRef();
+  const navigate = useNavigate()
   const onSubmit = async (data) => {
     if (data.password === data.retypePassword) {
-      data.profileImage = profileImg;
-      console.log(data,"user data")
+      const formData = new FormData();
+      formData.append('firstName',data.firstName);
+      formData.append('lastName',data.lastName);
+      formData.append('email',data.email);
+      formData.append('password',data.password);
+      formData.append("files",profileImg);
+      
       try {
         const response = await apiCall(
-          "//localhost:4000/register",
+          "http://localhost:4000/register",
           "POST",
-          JSON.stringify(data),
-          {
-            "Content-Type": "application/json",
-          }
+          formData,
+          // {
+          //   "Content-Type": "application/json",
+          // }
         );
-        console.log(response);
+        console.log(response,"response")
+        if(response.status){
+          toast.success(response.message);
+         navigate('/signin')
+        }else{
+          toast.error(response.message)
+        }
       } catch (err) {
         console.log(err);
       }
     } else {
-      alert("password is mismatch, please check it");
+      toast.error("password is mismatch, please check it");
     }
   };
 
@@ -53,17 +66,16 @@ const Signup = () => {
     fileReader.readAsDataURL(e.target.files[0]);
   };
 
-
   return (
     <section className="registration-section">
       {isLoading ? (
         <Loader />
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="registration-form" onSubmit={handleSubmit(onSubmit)}>
           <h3>Register To App</h3>
           <label>Firstname</label>
           <input {...register("firstName", { required: true })} />
-          {errors.lastName && (
+          {errors.firstName && (
             <span className="error">This field is required</span>
           )}
           <label>Lastname</label>
@@ -72,22 +84,22 @@ const Signup = () => {
             <span className="error">This field is required</span>
           )}
           <label>Email</label>
-          <input {...register("email", { required: true })} />
+          <input  {...register("email", { required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i })} />
           {errors.email && (
-            <span className="error">This field is required</span>
+            <span className="error">please enter valid email</span>
           )}
           <label>Password</label>
-          <input {...register("password", { required: true })} />
+          <input {...register("password", { required: true, min:6, max:15 })} />
           {errors.password && (
-            <span className="error">This field is required</span>
+            <span className="error">minimum 6 chars required</span>
           )}
+          <label>Confirm Password</label>
           <input
             className="retype"
-            placeholder="conform password"
-            {...register("retypePassword", { required: true })}
+            {...register("retypePassword", { required: true, min:6, max:15 })}
           />
           {errors.retypePassword && (
-            <span className="error">This field is required</span>
+            <span className="error">minimum 6 chars required</span>
           )}
           <label>Select Profile Pic</label>
           <div className="preview-container">
@@ -113,12 +125,13 @@ const Signup = () => {
             className="file-button"
             onClick={profilePickHandler}
           >
-            select
+            Select a Pic
           </button>
-          <button type="submit">submit</button>
-          <div>
-            Already You have Accont, <NavLink to="/signin">Login</NavLink>
+          <button className="btn" type="submit">Submit</button>
+          <div style={{textAlign:"center"}}>
+            Already You have Accont  , <NavLink to="/signin">Login</NavLink>
           </div>
+          <div style={{textAlign:"center"}}>Forgot your Password? <NavLink to="#">Click Here to Reset</NavLink></div>
         </form>
       )}
     </section>

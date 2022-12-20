@@ -1,0 +1,14 @@
+.registration-form{
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding:20px 30px;
+    border-radius: 5px;
+}
+
+@media screen and (min-width:767px) {
+    .registration-form{
+        min-width: 500px;
+       
+    }
+}

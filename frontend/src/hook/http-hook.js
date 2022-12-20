@@ -16,9 +16,14 @@ export const useHttpClient = () => {
 
         const responseData = await response.json();
 
-        if (!response.ok) {
-          throw new Error("Something went wrong, Please try again");
+        if(!responseData.status){
+          setErrorMessage(responseData.message || "Something went wrong, Please try again" )
         }
+
+        // if (!response.ok) {
+        //   throw new Error("Something went wrong, Please try again");
+        // }
+        console.log(responseData,"res")
 
         setIsLoading(false);
         return responseData;

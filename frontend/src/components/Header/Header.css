@@ -1,14 +1,13 @@
 .header-section{
     /* position: fixed; */
-    background-color: red;
+    background-color: #256D85;
     color: #fff;
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    align-items: center;
+    padding: 20px 50px;
 }
 
-ul li{
-    list-style: none;
-    display: inline;
-    margin: 0 20px;
+.nav-link{
+    text-decoration: none;
 }
