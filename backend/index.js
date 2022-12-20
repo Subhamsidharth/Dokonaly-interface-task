@@ -5,7 +5,15 @@ const multer = require('multer');
 const app = express();
 //const { AppConfig } = require('aws-sdk');
 // const dotenv=require("dotenv").config()
-
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+    next();
+});
 
 
 app.use(express.json()); //express.json();
@@ -15,14 +23,14 @@ app.use('/', route);
 require("dotenv").config()
 
 mongoose.connect(process.env.MONGO_URL, {    //
-  useNewUrlParser: true
+    useNewUrlParser: true
 })
-.then(function(){
-  console.log("Mongodb is connected successfully.");
-})
-.catch(function(err){
-  console.log(err)
-})
+    .then(function () {
+        console.log("Mongodb is connected successfully.");
+    })
+    .catch(function (err) {
+        console.log(err)
+    })
 
 
-app.listen(process.env.PORT || 3000, function(){return console.log(`Express is running on port${process.env.PORT || 3000}`)});
+app.listen(process.env.PORT || 3000, function () { return console.log(`Express is running on port${process.env.PORT || 3000}`) });
