@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon backend/index.js"
+    "start": "npx nodemon backend/index.js",
+    "frontend": "cd frontend  &&  npm start",
+    "backend":"npx nodemon backend/index.js",
+    "dev": "concurrently --raw    \"npx nodemon backend/index.js\" \"npm run frontend\""
   },
   "repository": {
     "type": "git",
