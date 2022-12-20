@@ -44,8 +44,17 @@ const UserProfile = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log(data);
+    let body = {};
+    if(data.firstName){
+      body.firstName = data.firstName;
+    }
+    if(data.lastName){
+      body.lastName = data.lastName;
+    }
+    console.log(body,"body")
     try {
-      const response = await apiCall(url, "PUT", JSON.stringify(data), {
+      const response = await apiCall(url, "PUT", JSON.stringify(body), {
         "Content-Type": "application/json",
         Authorization: "Bearer " + auth.token,
       });
@@ -63,7 +72,28 @@ const UserProfile = () => {
   };
 
   const changePasswordHandler = async(data) => {
-    console.log(data,"data")
+    if(data.newpassword === data.conformpassword){
+      try {
+        const response = await apiCall(url + "/changepassword", "PUT", JSON.stringify(data), {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        });
+        if (response.status) {
+          console.log(response.Data)
+          toast.success(response.message);
+          setUser(response.Data);
+          auth.logout();
+          navigate('/')
+        } else {
+          toast.error(response.message);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }else{
+      toast.error("newpassword and conformpassword mismatch")
+    }
+    
   }
 
   useEffect(() => {
@@ -141,7 +171,7 @@ const UserProfile = () => {
                           <label>firstName</label>
                           <div>
                           <input
-                            {...register("firstName", { required: true })}
+                            {...register("firstName")}
                             // defaultValue={user.firstName}
                             type="text"
                           />
@@ -156,7 +186,7 @@ const UserProfile = () => {
                           <label>lastName</label>
                           <div>
                           <input
-                            {...register("lastName", { required: true })}
+                            {...register("lastName")}
                             // defaultValue={user.lastName}
                             type="text"
                           />
@@ -184,8 +214,8 @@ const UserProfile = () => {
                       <div className="flex-container">
                         <label>Current Password</label>
                         <div>
-                        <input  {...register2("currentPassword", { required: true, min:6 })}  type="text" />
-                        {errors2.currentPassword && (
+                        <input  {...register2("password", { required: true, min:6 })}  type="text" />
+                        {errors2.password && (
                             <span className="error">
                               minimum 6 chars required
                             </span>
@@ -196,8 +226,8 @@ const UserProfile = () => {
                       <div className="flex-container">
                         <label>New Password</label>
                         <div>
-                        <input  {...register2("newPassword", { required: true, min:6 })} type="text" />
-                        {errors2.newPassword && (
+                        <input  {...register2("newpassword", { required: true, min:6 })} type="text" />
+                        {errors2.newpassword && (
                             <span className="error">
                               minimum 6 chars required
                             </span>
@@ -208,9 +238,9 @@ const UserProfile = () => {
                       <div className="flex-container">
                         <label>Confirm Password</label>
                         <div>
-                        <input  {...register2("confirmPassword", { required: true, min:6 })} type="text" />
+                        <input  {...register2("conformpassword", { required: true, min:6 })} type="text" />
                       
-                      {errors2.currentPassword && (
+                      {errors2.conformpassword && (
                             <span className="error">
                               minimum 6 chars required
                             </span>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useAuth = () => {
   const [token, setToken] = useState(false);
@@ -19,6 +20,7 @@ export const useAuth = () => {
 
   const logout = useCallback(() => {
     setToken(null);
+    toast.success("Successfully logout");
     localStorage.removeItem("userData");
   }, []);
 

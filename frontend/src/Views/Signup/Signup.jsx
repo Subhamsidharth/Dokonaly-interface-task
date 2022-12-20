@@ -37,7 +37,7 @@ const Signup = () => {
         );
         console.log(response,"response")
         if(response.status){
-          toast.success(response.message);
+          toast.success("Register Successfully");
          navigate('/signin')
         }else{
           toast.error(response.message)

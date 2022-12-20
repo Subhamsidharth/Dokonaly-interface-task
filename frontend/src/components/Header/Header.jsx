@@ -1,5 +1,5 @@
 import React,{useContext} from 'react';
-import {NavLink,useNavigate} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import './Header.css';
 import { AuthContext } from '../../context/auth-context';
 
@@ -7,7 +7,7 @@ export const Header = () => {
 
   const auth = useContext(AuthContext);
 
-  const navigate = useNavigate();
+
   const logOutHandler = () => {
     auth.logout();
     // navigate('/signin');
